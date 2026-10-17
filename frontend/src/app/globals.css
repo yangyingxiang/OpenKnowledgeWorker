@@ -1,0 +1,220 @@
+@import 'tailwindcss';
+
+:root {
+  --okw-primary: #c0392b;
+  --okw-primary-dark: #a93226;
+  --okw-primary-light: rgba(192, 57, 43, 0.1);
+  --okw-accent: #e74c3c;
+  --okw-success: #27ae60;
+  --okw-warning: #e67e22;
+  --okw-bg: #faf9f7;
+  --okw-card: #ffffff;
+  --okw-text: #2c2c3a;
+  --okw-text-muted: #888899;
+  --okw-border: rgba(0, 0, 0, 0.08);
+  --background: #faf9f7;
+  --foreground: #2c2c3a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-okw-primary: #c0392b;
+  --color-okw-primary-dark: #a93226;
+  --color-okw-primary-light: rgba(192, 57, 43, 0.1);
+  --color-okw-accent: #e74c3c;
+  --color-okw-success: #27ae60;
+  --color-okw-warning: #e67e22;
+  --color-okw-bg: #faf9f7;
+  --color-okw-card: #ffffff;
+  --color-okw-text: #2c2c3a;
+  --color-okw-text-muted: #888899;
+  --color-okw-border: rgba(0, 0, 0, 0.08);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--okw-bg);
+  color: var(--okw-text);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Used via `animate-[fadeSlideIn_...]` / inline `animation` on the tests and PDD pages */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.25s ease forwards;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* PDD styling */
+.pdd-content h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--okw-text);
+}
+.pdd-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--okw-primary);
+}
+.pdd-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+  color: var(--okw-text);
+}
+.pdd-content p {
+  margin: 0.5rem 0;
+  line-height: 1.65;
+}
+.pdd-content ul,
+.pdd-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+.pdd-content li {
+  margin: 0.25rem 0;
+  line-height: 1.55;
+}
+.pdd-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.875rem;
+}
+.pdd-content th {
+  background: var(--okw-primary-light);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--okw-primary);
+}
+.pdd-content td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--okw-border);
+}
+.pdd-content code {
+  background: #f0eeeb;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+.pdd-content pre {
+  background: #2c2c3a;
+  color: #e8e6e3;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+.pdd-content pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+.pdd-content blockquote {
+  border-left: 3px solid var(--okw-primary);
+  padding: 0.5rem 1rem;
+  margin: 0.75rem 0;
+  background: var(--okw-primary-light);
+  border-radius: 0 6px 6px 0;
+}
+
+/* Code syntax */
+.code-viewer pre {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  tab-size: 4;
+}
+
+.code-line-highlight {
+  background: rgba(192, 57, 43, 0.15);
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}

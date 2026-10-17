@@ -1,0 +1,62 @@
+# Quick start:  cp .env.example .env  (add your API key)  &&  docker compose up --build
+# Then open http://localhost:3000. The mortgage example is loaded on first start.
+name: openknowledgeworker
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: openknowledgeworker
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d openknowledgeworker"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # LLM settings come from .env (or your shell); all are optional.
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_SERVER_FALLBACK: ${LLM_SERVER_FALLBACK:-1}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      SANDBOX_TIMEOUT: ${SANDBOX_TIMEOUT:-120}
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/openknowledgeworker
+      FRONTEND_URL: http://localhost:3000
+      UPLOAD_DIR: /data/uploads
+      DOMAIN_PACKS_DIR: /app/examples
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5003:5003"
+    volumes:
+      - uploads:/data/uploads
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5003/ready')"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  frontend:
+    build:
+      context: frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:5003
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  db-data:
+  uploads:

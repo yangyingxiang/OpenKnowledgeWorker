@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/openknowledgeworker/openknowledgeworker/examples/domain-pack.schema.json",
+  "title": "OpenKnowledgeWorker domain pack",
+  "type": "object",
+  "required": ["id", "name", "domain", "description"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "description": "Must equal the pack's folder name."},
+    "name": {"type": "string", "description": "Process name shown in the app."},
+    "domain": {"type": "string"},
+    "description": {"type": "string"},
+    "key_inputs": {"type": "array", "items": {"type": "string"}},
+    "key_outputs": {"type": "array", "items": {"type": "string"}},
+    "sources": {
+      "type": "array",
+      "description": "Source documents. Local files (path) are ingested; third-party documents are linked (url), never bundled.",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {"type": "string"},
+          "path": {"type": "string", "description": "File inside the pack (.md, .html, .txt, .pdf you have rights to)."},
+          "url": {"type": "string", "format": "uri"}
+        },
+        "oneOf": [{"required": ["path"]}, {"required": ["url"]}]
+      }
+    },
+    "sample_input": {"description": "Example case: inline object or a .json file path.", "type": ["object", "string"]},
+    "test_cases": {"type": "string", "description": "JSONL file: test_name, description, input_data, expected_assertions, mock_llm_judge."},
+    "output_contract": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "object",
+          "description": "Required keys of the engine result's summary, mapped to descriptions.",
+          "additionalProperties": {"type": "string"}
+        }
+      }
+    },
+    "agent_guidance": {"type": "string", "description": "Domain hints for the agents: inline text or a .md file path."},
+    "reference_code": {"type": "string", "description": "Folder containing an engine/ package with engine/engine.py:run_engine(case)."},
+    "sample_outputs": {
+      "type": "object",
+      "description": "Optional pre-generated outputs so people can explore without an LLM API key.",
+      "properties": {
+        "pdd": {"type": "string"},
+        "knowledge": {"type": "string"},
+        "questions": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,69 @@
+{
+  "test_id": "high_variance",
+  "test_name": "Lisa Chang — High W-2 Variance",
+  "description": "Single borrower with paystub/W-2 variance above 10% threshold. Exercises the 'use lower value' branch in base salary calculation. Also has qualifying overtime.",
+  "application": {
+    "application_id": "CHANG-2026-0244",
+    "application_date": "2026-03-25",
+    "loan_purpose": "Refinance",
+    "property": {
+      "address": "16 Harbor View Lane, Ossining, NY 10562",
+      "type": "Single Family",
+      "purchase_price": 420000,
+      "appraised_value": 425000
+    },
+    "borrowers": [
+      {
+        "id": "borrower_lisa",
+        "role": "primary",
+        "name": {"first": "Lisa", "last": "Chang"},
+        "ssn_last4": "7291",
+        "dob": "1989-07-30",
+        "employment": {
+          "current": {
+            "employer": "Atlas Financial Services",
+            "title": "Loan Officer",
+            "start_date": "2021-03-01",
+            "type": "W-2",
+            "pay_frequency": "semi-monthly"
+          }
+        },
+        "income": {
+          "paystub": {
+            "period": "2025-12-01 to 2025-12-15",
+            "ytd_gross": 97750,
+            "base_rate_annual": 82000,
+            "pay_frequency": "semi-monthly"
+          },
+          "w2_base": 72000,
+          "w2": [
+            {"year": 2025, "employer": "Atlas Financial Services", "wages": 97750, "note": "Includes base $72K + OT $8K + commission reclassified $15.75K"},
+            {"year": 2024, "employer": "Atlas Financial Services", "wages": 89500, "note": "Includes base $70K + OT $7.5K + misc"}
+          ],
+          "overtime": {
+            "2025": 8000,
+            "2024": 7500,
+            "months_documented": 24,
+            "employer_confirms_likely_to_continue": true
+          }
+        }
+      }
+    ],
+    "bank_deposits": {"large_deposits": []}
+  },
+  "mock_llm_judge": {
+    "1.3": {"decision": true, "confidence": 0.91, "reasoning": "Lisa has been employed at Atlas Financial Services since 2021 (5 years). W-2 wages increasing. Income likely to continue.", "meets_threshold": true}
+  },
+  "assertions": {
+    "total_annual": 79750,
+    "total_monthly": 6645.83,
+    "step_decisions": {
+      "2.1": "PASS"
+    },
+    "step_values": {
+      "2.1": 72000,
+      "2.2": 7750
+    },
+    "min_flag_count": 0
+  }
+}

@@ -1,0 +1,105 @@
+name: Bug report
+description: Report something that is broken or behaves unexpectedly.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        **Security issues:** do not file them here. Follow [SECURITY.md](../blob/main/SECURITY.md)
+        and use private vulnerability reporting instead.
+
+        **Never paste API keys, `.env` contents, or real customer data** into this form.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear, concise description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps, starting from a fresh process if possible.
+      placeholder: |
+        1. Create a process "Income Verification"
+        2. Upload examples/mortgage-income-verification/sources/lender_overlay.html
+        3. Click "Run research" on the PDD page
+        4. See error ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Document ingestion
+        - Research agent / PDD
+        - SME chat
+        - Evidence / provenance
+        - Coding agent
+        - Test suite
+        - Frontend UI
+        - Setup / Docker / database migrations
+        - Example / domain pack
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and error output
+      description: Backend logs, browser console output, or SSE error events. Redact anything sensitive.
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "v0.1.0 or commit SHA"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How are you running it?
+      options:
+        - Docker Compose
+        - Local (Python venv + pnpm)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: llm
+    attributes:
+      label: LLM provider and model
+      placeholder: "Anthropic / claude-sonnet-4-6, or OpenAI-compatible / <model>"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, Node.js version, PostgreSQL version, browser.
+      placeholder: |
+        - OS: macOS 14
+        - Python: 3.11.9
+        - Node.js: 20.x
+        - PostgreSQL: 16
+        - Browser: Chrome 130
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I removed secrets and real customer data from this report.
+          required: true

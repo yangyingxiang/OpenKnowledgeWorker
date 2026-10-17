@@ -1,0 +1,63 @@
+{
+  "test_id": "simple_salaried",
+  "test_name": "James Rivera — Simple Salaried",
+  "description": "Single W-2 borrower with base salary only. No variable income, no co-borrower, no deposits, no gaps. Minimal qualifying scenario.",
+  "application": {
+    "application_id": "RIVERA-2026-0108",
+    "application_date": "2026-03-15",
+    "loan_purpose": "Purchase",
+    "property": {
+      "address": "89 Maple Court, White Plains, NY 10601",
+      "type": "Condo",
+      "purchase_price": 310000,
+      "appraised_value": 315000
+    },
+    "borrowers": [
+      {
+        "id": "borrower_james",
+        "role": "primary",
+        "name": {"first": "James", "last": "Rivera"},
+        "ssn_last4": "3847",
+        "dob": "1991-11-03",
+        "employment": {
+          "current": {
+            "employer": "Westfield Municipal School District",
+            "title": "High School Mathematics Teacher",
+            "start_date": "2017-09-01",
+            "type": "W-2",
+            "pay_frequency": "bi-weekly"
+          }
+        },
+        "income": {
+          "paystub": {
+            "period": "2025-12-01 to 2025-12-14",
+            "ytd_gross": 72000,
+            "base_rate_annual": 72000,
+            "pay_frequency": "bi-weekly"
+          },
+          "w2_base": 72000,
+          "w2": [
+            {"year": 2025, "employer": "Westfield Municipal School District", "wages": 72000},
+            {"year": 2024, "employer": "Westfield Municipal School District", "wages": 69500}
+          ]
+        }
+      }
+    ],
+    "bank_deposits": {"large_deposits": []}
+  },
+  "mock_llm_judge": {
+    "1.3": {"decision": true, "confidence": 0.97, "reasoning": "James has been employed as a teacher at Westfield Municipal School District since 2017 (9 years). Public school employment is highly stable. Income is very likely to continue.", "meets_threshold": true}
+  },
+  "assertions": {
+    "total_annual": 72000,
+    "total_monthly": 6000,
+    "step_decisions": {
+      "2.1": "PASS",
+      "1.2": "PASS"
+    },
+    "step_values": {
+      "2.1": 72000
+    },
+    "min_flag_count": 0
+  }
+}

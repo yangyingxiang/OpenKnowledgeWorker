@@ -1,0 +1,32 @@
+{
+  "test_id": "chen_baseline",
+  "test_name": "David & Sarah Chen — Baseline",
+  "description": "Full dual-borrower scenario: W-2 with variable income, self-employment with same-field exception, undocumented large deposit. The canonical test case.",
+  "application_ref": "sample_application.json",
+  "mock_llm_judge": {
+    "1.3": {"decision": true, "confidence": 0.93, "reasoning": "David is employed as Senior Data Engineer at Northbridge Analytics since 2022, with increasing W-2 wages. Income is reasonably expected to continue.", "meets_threshold": true},
+    "4.2": {"decision": true, "confidence": 0.95, "reasoning": "Marketing/Brand Strategy and Marketing/Advertising are substantially the same professional field — both involve marketing strategy, brand positioning, and client acquisition.", "meets_threshold": true}
+  },
+  "assertions": {
+    "total_annual": 157450,
+    "total_monthly": 13120.83,
+    "step_decisions": {
+      "2.1": "PASS",
+      "2.2": "PASS",
+      "2.3": "EXCLUDE",
+      "3.1": "EXCLUDE",
+      "4.1": "FLAG",
+      "4.2": "PASS",
+      "4.3": "PASS",
+      "5.1": "FLAG"
+    },
+    "step_values": {
+      "2.1": 87500,
+      "2.2": 11550,
+      "2.3": 0,
+      "3.1": 0,
+      "4.3": 58400
+    },
+    "min_flag_count": 2
+  }
+}

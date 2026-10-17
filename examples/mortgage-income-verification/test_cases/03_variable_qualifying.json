@@ -1,0 +1,87 @@
+{
+  "test_id": "variable_qualifying",
+  "test_name": "Michael Park — Variable Income All Qualifying",
+  "description": "Single borrower with overtime, bonus (24-month history), and RSU (3-year forward continuance) all qualifying. Exercises the PASS branches for variable income.",
+  "application": {
+    "application_id": "PARK-2026-0215",
+    "application_date": "2026-03-20",
+    "loan_purpose": "Purchase",
+    "property": {
+      "address": "27 Summit Ridge Drive, Bronxville, NY 10708",
+      "type": "Single Family",
+      "purchase_price": 625000,
+      "appraised_value": 630000
+    },
+    "borrowers": [
+      {
+        "id": "borrower_michael",
+        "role": "primary",
+        "name": {"first": "Michael", "last": "Park"},
+        "ssn_last4": "9162",
+        "dob": "1985-04-22",
+        "employment": {
+          "current": {
+            "employer": "Riverside Medical Center",
+            "title": "Senior Pharmacist",
+            "start_date": "2018-06-15",
+            "type": "W-2",
+            "pay_frequency": "bi-weekly"
+          }
+        },
+        "income": {
+          "paystub": {
+            "period": "2025-12-01 to 2025-12-14",
+            "ytd_gross": 140500,
+            "base_rate_annual": 95000,
+            "pay_frequency": "bi-weekly"
+          },
+          "w2_base": 93000,
+          "w2": [
+            {"year": 2025, "employer": "Riverside Medical Center", "wages": 140500, "note": "Includes base $93K + OT $18K + bonus $15K + RSU $12K + misc"},
+            {"year": 2024, "employer": "Riverside Medical Center", "wages": 131500, "note": "Includes base $90K + OT $16K + bonus $14K + RSU $10K + misc"}
+          ],
+          "overtime": {
+            "2025": 18000,
+            "2024": 16000,
+            "months_documented": 24,
+            "employer_confirms_likely_to_continue": true
+          },
+          "bonus": {
+            "2025": 15000,
+            "2024": 14000,
+            "history_note": "Annual performance bonus — received both years"
+          },
+          "rsu": {
+            "2025_vested": 12000,
+            "grant_date": "2021-01-15",
+            "vesting_schedule": "4-year cliff, 25% annual",
+            "years_remaining": 0,
+            "three_year_forward_continuance": true,
+            "note": "Fully vested first grant; second grant issued 2024 with 4-year schedule — 3-year forward documented"
+          }
+        }
+      }
+    ],
+    "bank_deposits": {"large_deposits": []}
+  },
+  "mock_llm_judge": {
+    "1.3": {"decision": true, "confidence": 0.96, "reasoning": "Michael has been employed as Senior Pharmacist at Riverside Medical Center since 2018 (8 years). Healthcare employment is stable. Income is very likely to continue.", "meets_threshold": true}
+  },
+  "assertions": {
+    "total_annual": 138500,
+    "total_monthly": 11541.67,
+    "step_decisions": {
+      "2.1": "PASS",
+      "2.2": "PASS",
+      "2.3": "PASS",
+      "3.1": "PASS"
+    },
+    "step_values": {
+      "2.1": 95000,
+      "2.2": 17000,
+      "2.3": 14500,
+      "3.1": 12000
+    },
+    "min_flag_count": 0
+  }
+}

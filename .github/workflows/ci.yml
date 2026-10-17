@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+      - run: pip install -r backend/requirements-dev.txt
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Backend tests
+        working-directory: backend
+        run: pytest
+      - name: Example reference engine tests
+        working-directory: examples/mortgage-income-verification/reference_engine
+        run: pytest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm test
+      - run: pnpm build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start the stack
+        run: docker compose up --build --detach --wait --wait-timeout 300
+      - name: Smoke test (seeded example, golden tests in code mode)
+        run: |
+          curl --fail --silent localhost:5003/ready
+          PID=$(curl --fail --silent localhost:5003/api/processes | python3 -c "import json,sys; print(json.load(sys.stdin)[0]['id'])")
+          curl --fail --silent -N -X POST "localhost:5003/api/processes/$PID/tests/run" \
+            -H 'Content-Type: application/json' -d '{"mode": "code"}' > run.sse
+          python3 - <<'EOF'
+          import json
+          events = [json.loads(l[6:]) for l in open('run.sse') if l.startswith('data: ')]
+          done = [e for e in events if e['type'] == 'test_complete']
+          assert len(done) == 5 and all(e['assertions_passed'] == e['assertions_total'] for e in done), events
+          print('All golden tests passed in Docker')
+          EOF
+          curl --fail --silent -o /dev/null localhost:3000/processes
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs

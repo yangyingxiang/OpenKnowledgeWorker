@@ -1,0 +1,11 @@
+[project]
+name = "openknowledgeworker-backend"
+version = "0.1.0"
+description = "OpenKnowledgeWorker API: turns process knowledge into verified automation"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+# Lint/format settings live in the repository-root ruff.toml.

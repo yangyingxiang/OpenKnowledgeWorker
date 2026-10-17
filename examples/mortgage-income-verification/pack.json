@@ -1,0 +1,37 @@
+{
+  "$schema": "../domain-pack.schema.json",
+  "id": "mortgage-income-verification",
+  "name": "Income Verification",
+  "domain": "Mortgage Underwriting",
+  "description": "Determine qualifying monthly income for mortgage applicants from W-2s, paystubs, tax returns and bank statements, following the Fannie Mae Selling Guide plus a stricter lender overlay.",
+  "key_inputs": ["W-2 forms", "paystubs", "1099 forms", "tax returns", "bank statements"],
+  "key_outputs": ["qualifying_monthly_income", "income_component_breakdown", "flags_and_conditions", "audit_trail"],
+  "sources": [
+    {"title": "Acme Home Lending income verification overlay (fictional)", "path": "sources/lender_overlay.html"},
+    {"title": "Fannie Mae Selling Guide B3-3.1-01: General Income Information", "url": "https://selling-guide.fanniemae.com/sel/b3-3.1-01/general-income-information"},
+    {"title": "Fannie Mae Selling Guide B3-3.2-01: Standards for Employment and Income Documentation", "url": "https://selling-guide.fanniemae.com/sel/b3-3.2-01/standards-employment-and-income-documentation"},
+    {"title": "Fannie Mae Selling Guide B3-3.2-02: Standards for Employment-Related Income", "url": "https://selling-guide.fanniemae.com/sel/b3-3.2-02/standards-employment-related-income"},
+    {"title": "Fannie Mae Selling Guide B3-3.3-01: Base Income", "url": "https://selling-guide.fanniemae.com/sel/b3-3.3-01/base-income"},
+    {"title": "Fannie Mae Selling Guide B3-3.3-02: Bonus, Commission, Overtime, and Tip Income", "url": "https://selling-guide.fanniemae.com/sel/b3-3.3-02/bonus-commission-overtime-and-tip-income"},
+    {"title": "Fannie Mae Selling Guide B3-3.3-07: Restricted Stock Units and Restricted Stock", "url": "https://selling-guide.fanniemae.com/sel/b3-3.3-07/restricted-stock-units-and-restricted-stock-employment-income"},
+    {"title": "Fannie Mae Selling Guide B3-3.5-01: Self-Employed Borrower", "url": "https://selling-guide.fanniemae.com/sel/b3-3.5-01/underwriting-factors-and-documentation-self-employed-borrower"}
+  ],
+  "sample_input": "sample_application.json",
+  "test_cases": "test_cases.jsonl",
+  "output_contract": {
+    "summary": {
+      "total_annual": "Total qualifying annual income across all borrowers (number)",
+      "total_monthly": "total_annual / 12, rounded to 2 decimals (number)",
+      "flags": "List of flags/conditions raised (strings)",
+      "step_decisions": "Map of step id to PASS | FLAG | EXCLUDE | SKIP",
+      "step_values": "Map of step id to the step's numeric result"
+    }
+  },
+  "agent_guidance": "agent_guidance.md",
+  "reference_code": "reference_engine",
+  "sample_outputs": {
+    "pdd": "sample_outputs/pdd.md",
+    "knowledge": "sample_outputs/KNOWLEDGE.md",
+    "questions": "sample_outputs/QUESTIONS.md"
+  }
+}

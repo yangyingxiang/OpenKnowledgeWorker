@@ -1,0 +1,17 @@
+# Shared lint/format settings for all Python code in the repository.
+line-length = 120
+target-version = "py311"
+extend-exclude = ["backend/alembic", "frontend"]
+
+[lint]
+select = ["E4", "E7", "E9", "F", "B", "I"]
+ignore = ["B008"]  # function calls in argument defaults (Flask/SQLAlchemy idioms)
+
+[lint.per-file-ignores]
+"backend/tests/conftest.py" = ["E402"]  # env vars must be set before importing the app
+
+[lint.isort]
+known-first-party = ["app"]
+
+[format]
+quote-style = "preserve"

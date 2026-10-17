@@ -1,0 +1,85 @@
+name: Domain pack proposal
+description: Propose a new domain pack (a worked example process with public sources, sample inputs, and golden test cases).
+title: "[Domain pack]: "
+labels: ["domain-pack", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A **domain pack** packages everything needed to run OpenKnowledgeWorker end to end on a
+        new rule-heavy process: public source documents, synthetic sample inputs, expected
+        outputs, and golden test cases. See
+        [`examples/mortgage-income-verification/`](../tree/main/examples/mortgage-income-verification)
+        for the reference example.
+
+        **All sample data must be synthetic.** Do not include real customer data or documents you
+        are not permitted to redistribute.
+  - type: input
+    id: domain
+    attributes:
+      label: Domain
+      description: Industry or function.
+      placeholder: "Accounts payable — invoice matching"
+    validations:
+      required: true
+  - type: textarea
+    id: process
+    attributes:
+      label: Process description
+      description: What decision or calculation does the process produce? What are its main inputs, outputs, and phases?
+      placeholder: |
+        Match each supplier invoice to its purchase order and goods receipt, decide whether
+        it can be paid automatically, and route exceptions. Inputs: invoice, PO, receipt.
+        Outputs: match decision, discrepancies, approval route.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Public source documents
+      description: List each source with a URL. Prefer authoritative public sources (regulators, standards bodies, public program manuals).
+      placeholder: |
+        - Title — https://example.gov/manual/section-1 — sections 1.2–1.5
+        - Title — https://example.org/guide.pdf — pages 10–24
+    validations:
+      required: true
+  - type: textarea
+    id: licensing
+    attributes:
+      label: Licensing of sources
+      description: For each source, state its license or terms of use and whether it may be redistributed in this repository or only linked to.
+      placeholder: |
+        - Source 1: U.S. government work, public domain — can be redistributed
+        - Source 2: copyrighted, free to read — link only, do not commit
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Sample inputs
+      description: Describe (or paste a short JSON example of) the synthetic case data the process takes.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: Expected outputs
+      description: For the sample input(s), what should the process produce? Which steps require semantic judgement (LLM judge) versus deterministic rules?
+    validations:
+      required: true
+  - type: textarea
+    id: overlay
+    attributes:
+      label: Overlays or local policy (optional)
+      description: Any synthetic organization-specific overlay that tightens or changes the public rules, like `lender_overlay.html` in the mortgage example.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: All sample data is synthetic and contains no real personal or customer information.
+          required: true
+        - label: I have checked the licensing of every source document listed above.
+          required: true
+        - label: I am willing to help build or review this domain pack.

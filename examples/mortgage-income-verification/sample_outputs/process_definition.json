@@ -1,0 +1,30 @@
+{
+  "process_id": "income_verification",
+  "name": "Income Verification for Mortgage Underwriting",
+  "domain": "Mortgage Underwriting",
+  "description": "Determine qualifying monthly income for mortgage loan applicants by analyzing W-2s, paystubs, tax returns, and other income documentation per FNMA Selling Guide and institutional overlay rules.",
+  "key_inputs": [
+    "W-2 forms",
+    "paystubs",
+    "1099 forms",
+    "tax returns",
+    "VOE forms",
+    "bank statements"
+  ],
+  "key_outputs": [
+    "qualifying_monthly_income",
+    "income_component_breakdown",
+    "flags_and_conditions",
+    "audit_trail"
+  ],
+  "reference_docs": [
+    "https://selling-guide.fanniemae.com/sel/b3-3.1-01/general-income-information",
+    "https://selling-guide.fanniemae.com/sel/b3-3.3-01/base-income",
+    "https://selling-guide.fanniemae.com/sel/b3-3.3-02/bonus-commission-overtime-and-tip-income",
+    "https://selling-guide.fanniemae.com/sel/b3-3.5-01/underwriting-factors-and-documentation-self-employed-borrower",
+    "https://selling-guide.fanniemae.com/sel/b3-3.3-07/restricted-stock-units-and-restricted-stock-employment-income",
+    "https://selling-guide.fanniemae.com/sel/b3-3.2-02/standards-employment-related-income",
+    "sources/lender_overlay.html"
+  ],
+  "created_at": "2026-04-01T08:56:53.391588"
+}

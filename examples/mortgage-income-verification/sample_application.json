@@ -1,0 +1,198 @@
+{
+  "application_id": "CHEN-2026-0042",
+  "application_date": "2026-03-28",
+  "loan_purpose": "Purchase",
+  "property": {
+    "address": "142 Birchwood Lane, Tarrytown, NY 10591",
+    "type": "Single Family",
+    "purchase_price": 485000,
+    "appraised_value": 490000
+  },
+  "borrowers": [
+    {
+      "id": "borrower_david",
+      "role": "primary",
+      "name": {
+        "first": "David",
+        "last": "Chen"
+      },
+      "ssn_last4": "4821",
+      "dob": "1988-06-14",
+      "employment": {
+        "current": {
+          "employer": "Northbridge Analytics Inc.",
+          "title": "Senior Data Engineer",
+          "start_date": "2022-09-15",
+          "type": "W-2",
+          "pay_frequency": "semi-monthly"
+        },
+        "history": [
+          {
+            "employer": "DataStream Solutions",
+            "title": "Data Engineer",
+            "start_date": "2019-03-01",
+            "end_date": "2022-07-30",
+            "type": "W-2"
+          }
+        ],
+        "gap": {
+          "from": "2022-07-30",
+          "to": "2022-09-15",
+          "days": 47,
+          "explanation": "Voluntary transition — signed offer letter dated 2022-08-02",
+          "documentation": ["offer_letter_northbridge.pdf"]
+        }
+      },
+      "income": {
+        "paystub": {
+          "period": "2025-12-01 to 2025-12-15",
+          "ytd_gross": 87500,
+          "base_rate_annual": 87500,
+          "pay_frequency": "semi-monthly"
+        },
+        "w2_base": 85000,
+        "w2": [
+          {
+            "year": 2025,
+            "employer": "Northbridge Analytics Inc.",
+            "wages": 110200,
+            "note": "Includes base $85,000 + OT $14,200 + bonus $12,000 - pretax deductions offset"
+          },
+          {
+            "year": 2024,
+            "employer": "Northbridge Analytics Inc.",
+            "wages": 95400,
+            "note": "Includes base $83,000 + OT $8,900 + misc $3,500"
+          }
+        ],
+        "overtime": {
+          "2025": 14200,
+          "2024": 8900,
+          "months_documented": 24,
+          "employer_confirms_likely_to_continue": true
+        },
+        "bonus": {
+          "2025": 12000,
+          "2024": null,
+          "history_note": "First year receiving bonus — performance-based, discretionary"
+        },
+        "rsu": {
+          "2025_vested": 8500,
+          "grant_date": "2024-11-01",
+          "vesting_schedule": "4-year cliff, 25% annual",
+          "years_remaining": 3,
+          "three_year_forward_continuance": false,
+          "note": "First vest in 2025 — no 3-year history of receipt"
+        }
+      }
+    },
+    {
+      "id": "borrower_sarah",
+      "role": "co-borrower",
+      "name": {
+        "first": "Sarah",
+        "last": "Chen"
+      },
+      "ssn_last4": "7293",
+      "dob": "1990-02-22",
+      "employment": {
+        "current": {
+          "employer": "Self — Chen Creative Consulting LLC",
+          "title": "Freelance Marketing Consultant",
+          "start_date": "2025-01-15",
+          "type": "1099-NEC",
+          "months_self_employed": 14,
+          "industry": "Marketing / Brand Strategy"
+        },
+        "prior": {
+          "employer": "Apex Media Group",
+          "title": "Marketing Director",
+          "start_date": "2020-06-01",
+          "end_date": "2025-01-10",
+          "type": "W-2",
+          "final_annual_salary": 62000,
+          "industry": "Marketing / Advertising"
+        }
+      },
+      "income": {
+        "schedule_c": {
+          "2025": {
+            "gross_receipts": 89000,
+            "total_expenses": 30600,
+            "net_profit": 58400,
+            "period_months": 12
+          }
+        },
+        "form_1099": {
+          "2025_total": 71000,
+          "annualized_from_months": 12,
+          "annualized_amount": 71000
+        },
+        "prior_w2": {
+          "2024": {
+            "employer": "Apex Media Group",
+            "wages": 62000
+          }
+        },
+        "documentation": {
+          "cpa_letter": {
+            "provided": true,
+            "date": "2026-02-15",
+            "confirms": "Business is active, no significant receivables outstanding, projecting stable revenue"
+          },
+          "transition_loe": {
+            "provided": true,
+            "date": "2025-02-01",
+            "explains": "Left salaried Marketing Director role to start consulting practice in same field"
+          }
+        },
+        "same_field_exception": {
+          "prior_field": "Marketing / Advertising",
+          "current_field": "Marketing / Brand Strategy",
+          "semantic_match_needed": true,
+          "note": "Both marketing-focused — qualifies for same-field continuity per FNMA B3-3.1-05 and AHL overlay"
+        }
+      }
+    }
+  ],
+  "bank_deposits": {
+    "large_deposits": [
+      {
+        "date": "2026-02-20",
+        "amount": 18000,
+        "account": "Joint Checking — Acme Bank",
+        "source_claimed": "Gift from David's parents for down payment",
+        "documentation": {
+          "gift_letter": true,
+          "donor_bank_statement": false,
+          "transfer_evidence": false
+        },
+        "overlay_threshold": 3000,
+        "exceeds_threshold": true,
+        "note": "Undocumented beyond gift letter — needs donor bank statement + transfer evidence per AHL overlay"
+      }
+    ]
+  },
+  "expected_results": {
+    "naive_extraction": {
+      "david_base": 85000,
+      "david_overtime": 14200,
+      "david_bonus": 12000,
+      "david_rsu": 8500,
+      "sarah_self_employment": 71000,
+      "total_annual": 190700,
+      "total_monthly": 15891.67
+    },
+    "rule_applied": {
+      "david_base": 87500,
+      "david_overtime": 11550,
+      "david_bonus": 0,
+      "david_rsu": 0,
+      "sarah_self_employment": 58400,
+      "total_annual": 157450,
+      "total_monthly": 13120.83
+    },
+    "gap_annual": 33250,
+    "gap_monthly": 2770.83
+  }
+}

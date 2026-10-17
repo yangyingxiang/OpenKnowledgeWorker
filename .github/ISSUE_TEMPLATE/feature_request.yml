@@ -1,0 +1,62 @@
+name: Feature request
+description: Suggest an improvement or a new capability.
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Please check the [roadmap](../blob/main/ROADMAP.md) first;
+        if your idea is already listed, comment on or link to the related issue instead.
+
+        For open-ended questions or early ideas, consider starting a
+        [Discussion](../discussions) instead.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to do, and what makes it hard today? Who is the user (process owner, SME, developer, QA)?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you like to happen? Include UI sketches, API shapes, or example inputs/outputs if helpful.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches or workarounds you have tried.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Document ingestion
+        - Research agent / PDD
+        - SME chat
+        - Evidence / provenance
+        - Coding agent
+        - Test suite
+        - Frontend UI
+        - LLM providers
+        - Security / auth
+        - Deployment
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you be willing to contribute this?
+      options:
+        - "Yes, I can open a pull request"
+        - "Maybe, with some guidance"
+        - "No"
+    validations:
+      required: true
