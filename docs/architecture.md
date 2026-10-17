@@ -10,35 +10,9 @@ OpenKnowledgeWorker is a single Flask backend plus a Next.js frontend, backed by
 Everything is scoped to a **process** (for example, *Income Verification*). There is no
 authentication or multi-tenancy; see [SECURITY.md](../SECURITY.md).
 
-```mermaid
-%%{init: {"flowchart": {"htmlLabels": false}} }%%
-flowchart TB
-    subgraph FE["frontend (Next.js)"]
-        Pages[Pages] --> ApiTs[lib/api.ts + useSSE]
-        Chat[ChatSidebar] --> ApiTs
-    end
+<p align="center"><img src="diagrams/architecture.png" alt="Frontend pages call the Flask API; blueprints delegate to services, the context builder, the background job runner and agent loops, which use LLM providers, the sandbox and SQLAlchemy models"></p>
 
-    subgraph BE["backend/app (Flask)"]
-        MW[middleware] --> BP[api blueprints]
-        BP --> SVC[services]
-        BP --> CTX[context builder]
-        BP --> JOBS[jobs.py]
-        JOBS --> AG[agent loops]
-        BP --> AG
-        AG --> LLM[llm providers]
-        AG --> SBX[[sandbox.py]]
-        JOBS --> SBX
-        AG --> M[models]
-        SVC --> M
-        CTX --> M
-    end
-
-    ApiTs -- REST / SSE --> MW
-    M --> DB[(PostgreSQL)]
-    LLM --> Provider[(LLM API)]
-    SVC --> FS[(uploads + sandboxes)]
-    SBX --> FS
-```
+<sub>Diagram source: [`diagrams/architecture.mmd`](diagrams/architecture.mmd) (re-render with `make diagrams`).</sub>
 
 ## Request flow
 

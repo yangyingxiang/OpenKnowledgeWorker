@@ -3,7 +3,7 @@ PY ?= python3
 VENV := backend/.venv
 BIN := $(VENV)/bin
 
-.PHONY: help up down install db seed backend frontend test lint format
+.PHONY: help up down install db seed backend frontend test lint format diagrams
 
 help:  ## Show this help
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  %-10s %s\n", $$1, $$2}'
@@ -46,3 +46,6 @@ format:  ## Auto-format Python and TypeScript
 	$(BIN)/ruff check --fix .
 	$(BIN)/ruff format .
 	cd frontend && pnpm format
+
+diagrams:  ## Re-render docs/diagrams/*.mmd to PNG (needs Node.js)
+	for f in docs/diagrams/*.mmd; do npx -y @mermaid-js/mermaid-cli@11.4.2 -i $$f -o $${f%.mmd}.png -s 2 -b white; done

@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph FE["frontend (Next.js)"]
+        Pages[Pages] --> ApiTs[lib/api.ts + useSSE]
+        Chat[ChatSidebar] --> ApiTs
+    end
+
+    subgraph BE["backend/app (Flask)"]
+        MW[middleware] --> BP[api blueprints]
+        BP --> SVC[services]
+        BP --> CTX[context builder]
+        BP --> JOBS[jobs.py]
+        JOBS --> AG[agent loops]
+        BP --> AG
+        AG --> LLM[llm providers]
+        AG --> SBX[[sandbox.py]]
+        JOBS --> SBX
+        AG --> M[models]
+        SVC --> M
+        CTX --> M
+    end
+
+    ApiTs -- REST / SSE --> MW
+    M --> DB[(PostgreSQL)]
+    LLM --> Provider[(LLM API)]
+    SVC --> FS[(uploads + sandboxes)]
+    SBX --> FS

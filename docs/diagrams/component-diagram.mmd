@@ -1,0 +1,129 @@
+flowchart TB
+    classDef actor fill:#172554,color:#ffffff,stroke:#172554,stroke-width:1px
+    classDef experience fill:#eff6ff,color:#172554,stroke:#3b82f6,stroke-width:1.5px
+    classDef domain fill:#f8fafc,color:#0f172a,stroke:#475569,stroke-width:1.5px
+    classDef runtime fill:#f5f3ff,color:#3b0764,stroke:#7c3aed,stroke-width:1.5px
+    classDef control fill:#fff7ed,color:#431407,stroke:#ea580c,stroke-width:1.5px
+    classDef data fill:#ecfdf5,color:#064e3b,stroke:#059669,stroke-width:1.5px
+    classDef external fill:#f9fafb,color:#374151,stroke:#9ca3af,stroke-width:1px,stroke-dasharray: 5 5
+
+    subgraph Users[Enterprise Users]
+        direction LR
+        Owner[Process Owner]
+        Architect[Process Architect]
+        SME[Subject-Matter Expert]
+        Engineer[Automation Engineer]
+        Reviewer[Governance Reviewer]
+        Admin[Platform Administrator]
+    end
+
+    class Owner,Architect,SME,Engineer,Reviewer,Admin actor
+
+    subgraph Experience[Experience and API Layer]
+        Web[Role-Based Web Application]
+        API[Public API and BFF<br/>REST + resumable event streams]
+    end
+
+    class Web,API experience
+
+    subgraph Core[OpenKnowledgeWorker Logical Components]
+        direction TB
+
+        SF[1. Source and Evidence Fabric<br/><br/>Connectors and uploads<br/>Immutable source versions<br/>Parsing, OCR, transcription<br/>Chunks and evidence spans<br/>Source ACL propagation]
+
+        PK[2. Process Knowledge Studio<br/><br/>Claims and evidence links<br/>Conflicts and questions<br/>SME responses and decisions<br/>Typed Process IR and projections<br/>Change sets, versions, impact]
+
+        AR[3. Agent Runtime<br/><br/>Checkpointed agent state machine<br/>Context and memory management<br/>Typed and scoped tools<br/>Model-provider abstraction<br/>Budgets, retries, cancellation]
+
+        AE[4. Automation Engineering<br/><br/>Execution design<br/>Versioned code workspaces<br/>Hybrid code and LLM contracts<br/>Traceability mappings<br/>Candidates and upgrade plans]
+
+        VR[5. Offline Verification and Release<br/><br/>Test and golden datasets<br/>Isolated offline execution<br/>Static and security checks<br/>Independent verification<br/>Release and export packages]
+
+        GC[6. Governance and Platform Control<br/><br/>Tenant and identity policy<br/>RBAC and contextual ABAC<br/>Approval workflows<br/>Model and data-movement policy<br/>Audit, retention, quotas]
+    end
+
+    class SF,PK,AE,VR domain
+    class AR runtime
+    class GC control
+
+    subgraph Platform[Platform Data and Infrastructure]
+        PG[(PostgreSQL<br/>module-owned schemas)]
+        OBJ[(Object Storage<br/>sources, workspaces, releases)]
+        BUS[(Durable Queue and Event Bus<br/>transactional outbox)]
+        SEC[(Secret Manager and KMS)]
+        OBS[(Telemetry Backend<br/>traces, metrics, logs)]
+        SBX[Isolated Build and<br/>Verification Workers]
+    end
+
+    class PG,OBJ,BUS,SEC,OBS,SBX data
+
+    subgraph External[External Enterprise and Provider Systems]
+        Content[Content Systems<br/>SharePoint, Confluence, Drive]
+        Collaboration[Collaboration Systems<br/>Teams, Slack, transcripts]
+        Models[Customer-Approved<br/>LLM Providers]
+        Downstream[Customer SDLC and Runtime<br/>Git, CI/CD, workflow platforms]
+    end
+
+    class Content,Collaboration,Models,Downstream external
+
+    Users --> Web
+    Web --> API
+
+    API --> SF
+    API --> PK
+    API --> AR
+    API --> AE
+    API --> VR
+    API --> GC
+
+    SF -->|Evidence references| PK
+    PK -->|Immutable AutomationPackage| AE
+    AE -->|Immutable CandidatePackage| VR
+    VR -->|Signed ReleasePackage| API
+
+    AR -->|Governed source tools| SF
+    AR -->|Proposal and edit commands| PK
+    AR -->|Workspace tools| AE
+    AR -->|Verification assistance| VR
+
+    GC -. authorization, constraints, approvals, audit .-> API
+    GC -. policy enforcement .-> SF
+    GC -. policy enforcement .-> PK
+    GC -. policy enforcement .-> AR
+    GC -. policy enforcement .-> AE
+    GC -. policy enforcement .-> VR
+
+    SF --> PG
+    PK --> PG
+    AR --> PG
+    AE --> PG
+    VR --> PG
+    GC --> PG
+
+    SF --> OBJ
+    AE --> OBJ
+    VR --> OBJ
+    SF --> BUS
+    PK --> BUS
+    AR --> BUS
+    AE --> BUS
+    VR --> BUS
+
+    AR --> SEC
+    SF --> SEC
+    VR --> SBX
+    AE --> SBX
+
+    API --> OBS
+    SF --> OBS
+    PK --> OBS
+    AR --> OBS
+    AE --> OBS
+    VR --> OBS
+    GC --> OBS
+
+    Content --> SF
+    Collaboration --> SF
+    AR --> Models
+    VR --> Models
+    API -->|Export only| Downstream

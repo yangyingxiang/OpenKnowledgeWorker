@@ -1,0 +1,8 @@
+flowchart LR
+    S[Source documents] --> R[Research agent]
+    R --> P[Process Definition Document]
+    E[Subject-matter expert] <--> C[SME chat]
+    C --> P
+    P --> G[Coding agent]
+    G --> V[Golden tests]
+    V -. failures become questions .-> C

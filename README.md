@@ -48,17 +48,9 @@ SME chat, code generation, LLM-mode tests) need a key.
 
 ## How it works
 
-```mermaid
-%%{init: {"flowchart": {"htmlLabels": false}} }%%
-flowchart LR
-    S[Source documents] --> R[Research agent]
-    R --> P[Process Definition Document]
-    E[Subject-matter expert] <--> C[SME chat]
-    C --> P
-    P --> G[Coding agent]
-    G --> V[Golden tests]
-    V -. failures become questions .-> C
-```
+<p align="center"><img src="docs/diagrams/how-it-works.png" alt="Sources and expert answers feed the research agent and SME chat, which maintain the Process Definition Document; the coding agent generates code that golden tests verify, and failures become new questions"></p>
+
+<sub>Diagram source: [`docs/diagrams/how-it-works.mmd`](docs/diagrams/how-it-works.mmd) (re-render with `make diagrams`).</sub>
 
 1. **Ingest:** upload PDFs, HTML or Markdown. Text is extracted, chunked and indexed as
    evidence.
